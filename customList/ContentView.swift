@@ -25,15 +25,15 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             List(data) { m in
-                VStack {
+                VStack(Spacing: 20) {
                     NavigationLink(destination: Text(m.title)) {
                         HStack{
                             Image(m.Image)
                                 .resizable()
                                 .frame(width: 120, height: 150)
                             VStack {
-                                ForEach(m.postType) { e in
-                                    Text(e)
+                                
+                                    Text("Lol")
                                         .foregroundColor(m.Color)
                                         .font(.caption2)
                                         .padding(5)
@@ -41,7 +41,7 @@ struct ContentView: View {
                                            RoundedRectangle(cornerRadius: 10)
                                             .stroke(m.Color, lineWidth: 1)
                                        )
-                                }
+                                
                             }
                         }
                     }.frame(height: 170)
