@@ -24,12 +24,12 @@ var data = [
     ListData(title: "How to Detect Light/Dark theme", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "themeDetector",Color: Color.green, percentage: 0.10),
     ListData(title: "Gradient Color", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "try1",Color: Color.red, percentage: 0.45),
     ListData(title: "How to Detect Light/Dark theme", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "themeDetector",Color: Color.green, percentage: 0.86)
-    
 ]
 
 extension Color {
     static let pinkColor = Color(red: 227 / 255, green: 133 / 255, blue: 180 / 255)
     static let purpleColor = Color(red: 123 / 255, green: 119 / 255, blue: 233 / 255)
+    static let OrangeColor = Color(red: 240 / 255, green: 146 / 255, blue: 171 / 255)
 }
 
 struct tags: View {
@@ -90,8 +90,46 @@ struct simpleListView: View {
 
 struct BlurryBackGroundView: View {
     var body: some View {
-        LinearGradient(gradient: Gradient(colors: [Color.pinkColor, Color.purpleColor]), startPoint: .topLeading, endPoint: .bottomTrailing).ignoresSafeArea()
-        Circle().frame(height: 10, width: 10).background(Color.red)
+        
+        ZStack {
+            LinearGradient(gradient: Gradient(colors: [Color.pinkColor, Color.purpleColor]), startPoint: .topLeading, endPoint: .bottomTrailing).ignoresSafeArea()
+            VStack {
+                Capsule()
+                    .fill(Color.OrangeColor)
+                    .frame(width: 200, height: 200)
+                    .offset(x: -150, y: -55)
+                Spacer()
+                Capsule()
+                    .fill(Color.OrangeColor)
+                    .frame(width: 200, height: 200)
+                    .offset(x: 150, y: 105)
+            }
+            VStack {
+                HStack {
+                    Image(systemName: "text.justify")
+                        .font(.title3)
+                        .foregroundColor(Color.white)
+                    Spacer()
+                    Image(systemName: "bell")
+                        .font(.title2)
+                        .foregroundColor(Color.white)
+                }.padding(.horizontal)
+                Spacer()
+            }
+            GeometryReader { g in
+                ScrollView {
+                    ForEach(data) { p in
+                        VStack(alignment: .center) {
+                            HStack(alignment: .center) {
+                                Text(p.title)
+                            }
+                        }.padding().frame(width: g.size.width / 1.1).background(Color.black.opacity(0.3))
+                    }
+                }.frame(width: g.size.width)
+            }
+           
+        }
+        
     }
 }
 
