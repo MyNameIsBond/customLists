@@ -106,7 +106,7 @@ struct BlurryBackGroundView: View {
             }
             VStack {
                 HStack {
-                    Image(systemName: "text.justify")
+                    Image(systemName: "text.justifyy")
                         .font(.title3)
                         .foregroundColor(Color.white)
                     Spacer()
