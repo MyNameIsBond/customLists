@@ -17,12 +17,12 @@ var data = [
     ListData(title: "LazyHGrid in SwiftUI", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "LazyGrid",Color: Color.red, percentage: 0.30),
     ListData(title: "LazyHGrid and LazyVGrid in SwiftUI ", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "LazyGrid2",Color: Color.red, percentage: 0.25),
     ListData(title: "How to Detect Light/Dark theme", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "themeDetector",Color: Color.green, percentage: 0.10),
-    ListData(title: "Gradient Color", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "try1",Color: Color.red, percentage: 0.45),
+    ListData(title: "Gradient Color in SWiftUI", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "try1",Color: Color.red, percentage: 0.45),
     ListData(title: "How to Detect Light/Dark theme", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "themeDetector",Color: Color.green, percentage: 0.86),
     ListData(title: "LazyHGrid in SwiftUI", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "LazyGrid",Color: Color.red, percentage: 0.30),
     ListData(title: "LazyHGrid and LazyVGrid in SwiftUI ", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "LazyGrid2",Color: Color.red, percentage: 0.25),
     ListData(title: "How to Detect Light/Dark theme", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "themeDetector",Color: Color.green, percentage: 0.10),
-    ListData(title: "Gradient Color", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "try1",Color: Color.red, percentage: 0.45),
+    ListData(title: "Gradient Color in SWiftUI", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "try1",Color: Color.red, percentage: 0.45),
     ListData(title: "How to Detect Light/Dark theme", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "themeDetector",Color: Color.green, percentage: 0.86)
 ]
 
@@ -88,9 +88,9 @@ struct simpleListView: View {
     }
 }
 
+// Blurry back ground Cards --------------------------------------
 struct BlurryBackGroundView: View {
     var body: some View {
-        
         ZStack {
             LinearGradient(gradient: Gradient(colors: [Color.pinkColor, Color.purpleColor]), startPoint: .topLeading, endPoint: .bottomTrailing).ignoresSafeArea()
             VStack {
@@ -104,32 +104,42 @@ struct BlurryBackGroundView: View {
                     .frame(width: 200, height: 200)
                     .offset(x: 150, y: 105)
             }
-            VStack {
-                HStack {
-                    Image(systemName: "text.justifyy")
-                        .font(.title3)
-                        .foregroundColor(Color.white)
-                    Spacer()
-                    Image(systemName: "bell")
-                        .font(.title2)
-                        .foregroundColor(Color.white)
-                }.padding(.horizontal)
-                Spacer()
-            }
+            
             GeometryReader { g in
+                
                 ScrollView {
+                    VStack {
+                        HStack {
+                            Image(systemName: "text.justify")
+                                .font(.title3)
+                                .foregroundColor(Color.white)
+                            Spacer()
+                            Image("logo")
+                                .resizable()
+                                .frame(width: 130, height: 40)
+                            Spacer()
+                            Image(systemName: "bell")
+                                .font(.title2)
+                                .foregroundColor(Color.white)
+                        }.padding(.horizontal)
+                    }
                     ForEach(data) { p in
-                        VStack(alignment: .center) {
-                            HStack(alignment: .center) {
-                                Text(p.title)
+                        VStack {
+                            HStack {
+                                Image(p.Image)
+                                    .resizable()
+                                    .frame(width: 120, height: 90)
+                                    .cornerRadius(10)
+                                VStack {
+                                    Text(p.title)
+                                }
                             }
-                        }.padding().frame(width: g.size.width / 1.1).background(Color.black.opacity(0.3))
+                        }.padding(.all).frame(width: g.size.width / 1.1).background(Color.black.opacity(0.3))
+                        .cornerRadius(10)
                     }
                 }.frame(width: g.size.width)
             }
-           
         }
-        
     }
 }
 
