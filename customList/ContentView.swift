@@ -1,7 +1,7 @@
 
 import SwiftUI
 
-struct ListData: Identifiable {
+struct ListData: Identifiable,Hashable {
     var id = UUID()
     var title: String
     var postType: Array<String>
@@ -14,12 +14,12 @@ struct ListData: Identifiable {
 
 
 var data = [
-    ListData(title: "LazyHGrid in SwiftUI", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "LazyGrid",Color: Color.red, percentage: 0.30),
+    ListData(title: "LazyHGrid in SwiftUI (part 1/3)", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "LazyGrid",Color: Color.red, percentage: 0.30),
     ListData(title: "LazyHGrid and LazyVGrid in SwiftUI ", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "LazyGrid2",Color: Color.red, percentage: 0.25),
     ListData(title: "How to Detect Light/Dark theme", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "themeDetector",Color: Color.green, percentage: 0.10),
     ListData(title: "Gradient Color in SWiftUI", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "try1",Color: Color.red, percentage: 0.45),
     ListData(title: "How to Detect Light/Dark theme", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "themeDetector",Color: Color.green, percentage: 0.86),
-    ListData(title: "LazyHGrid in SwiftUI", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "LazyGrid",Color: Color.red, percentage: 0.30),
+    ListData(title: "LazyHGrid in SwiftUI (part 1/3)", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "LazyGrid",Color: Color.red, percentage: 0.30),
     ListData(title: "LazyHGrid and LazyVGrid in SwiftUI ", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "LazyGrid2",Color: Color.red, percentage: 0.25),
     ListData(title: "How to Detect Light/Dark theme", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "themeDetector",Color: Color.green, percentage: 0.10),
     ListData(title: "Gradient Color in SWiftUI", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "try1",Color: Color.red, percentage: 0.45),
@@ -89,8 +89,167 @@ struct simpleListView: View {
 }
 
 // Blurry back ground Cards --------------------------------------
-struct BlurryBackGroundView: View {
+
+//blurrybackground
+
+extension Color {
+    static let textColor = Color(red: 235 / 255, green: 235 / 255, blue: 235 / 255)
+    static let subtextColor = Color(red: 199 / 255, green: 199 / 255, blue: 199 / 255)
+}
+
+struct blurTags:  View {
+    
+    var tags: Array<String>
+    
     var body: some View {
+        HStack {
+            ForEach(tags, id: \.self) { tag in
+                Text("\(tag)")
+                    .fontWeight(.semibold)
+                    .foregroundColor(.subtextColor)
+                    .font(.caption)
+            }
+        }
+    }
+}
+
+struct BlurView: UIViewRepresentable {
+    
+    let style: UIBlurEffect.Style
+
+    func makeUIView(context: UIViewRepresentableContext<BlurView>) -> UIView {
+        let view = UIView(frame: .zero)
+        view.backgroundColor = .clear
+        let blurEffect = UIBlurEffect(style: style)
+        let blurView = UIVisualEffectView(effect: blurEffect)
+        blurView.translatesAutoresizingMaskIntoConstraints = false
+        view.insertSubview(blurView, at: 0)
+        NSLayoutConstraint.activate([
+            blurView.heightAnchor.constraint(equalTo: view.heightAnchor),
+            blurView.widthAnchor.constraint(equalTo: view.widthAnchor),
+        ])
+        return view
+    }
+
+    func updateUIView(_ uiView: UIView,
+                      context: UIViewRepresentableContext<BlurView>) {
+
+    }
+
+}
+
+struct Stars: View {
+    var body: some View {
+        HStack(spacing: 5) {
+            Image(systemName: "star.fill")
+                .foregroundColor(Color.yellow)
+                .font(.caption)
+            Image(systemName: "star.fill")
+                .foregroundColor(Color.yellow)
+                .font(.caption)
+            Image(systemName: "star.fill")
+                .foregroundColor(Color.yellow)
+                .font(.caption)
+            Image(systemName: "star.fill")
+                .foregroundColor(Color.white)
+                .font(.caption)
+            Image(systemName: "star.fill")
+                .foregroundColor(Color.white)
+                .font(.caption)
+        }
+    }
+}
+
+struct smallcardView: View {
+    
+    var p: ListData
+    
+    var body: some View {
+        GeometryReader { g in
+            VStack(alignment: .leading) {
+                HStack {
+                    Image(p.Image)
+                        .resizable()
+                        .frame(width: 120, height: 90)
+                        .cornerRadius(10)
+                    Spacer()
+                    VStack(alignment: .leading) {
+                        blurTags(tags: p.postType)
+                        Spacer()
+                        Text(p.title)
+                            .foregroundColor(Color.textColor)
+                        Spacer()
+                        HStack {
+                            Stars()
+                            Text("(100)")
+                                .font(.caption2)
+                                .foregroundColor(.subtextColor)
+                        }
+                    }
+                    Spacer()
+                    VStack {
+                        Image(systemName: "ellipsis")
+                            .foregroundColor(Color.white)
+                        Spacer()
+                    }
+                }
+            }
+           
+        }
+    }
+}
+
+struct bigcardView: View {
+    
+    var p: ListData
+    
+    
+    var body: some View {
+        GeometryReader { g in
+            VStack(alignment: .leading) {
+                VStack(alignment: .leading) {
+                    Image(p.Image)
+                        .resizable()
+                        .frame(width: g.size.width / 1.2, height: 160)
+                        .cornerRadius(10)
+                    Spacer()
+                    VStack(alignment: .leading) {
+                        HStack {
+                            blurTags(tags: p.postType)
+                            Spacer()
+                            Image(systemName: "ellipsis")
+                                .foregroundColor(Color.white)
+                        }
+                        
+                        Spacer()
+                        Text(p.title)
+                            .foregroundColor(Color.textColor)
+                        Spacer()
+                        HStack {
+                            Stars()
+                            Text("(100)")
+                                .font(.caption2)
+                                .foregroundColor(.subtextColor)
+                        }
+                    }
+                    Spacer()
+                    VStack {
+                        
+                        Spacer()
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+struct BlurryBackGroundView: View {
+    
+    @State var small = true
+    
+    var body: some View {
+        
         ZStack {
             LinearGradient(gradient: Gradient(colors: [Color.pinkColor, Color.purpleColor]), startPoint: .topLeading, endPoint: .bottomTrailing).ignoresSafeArea()
             VStack {
@@ -123,19 +282,33 @@ struct BlurryBackGroundView: View {
                                 .foregroundColor(Color.white)
                         }.padding(.horizontal)
                     }
-                    ForEach(data) { p in
-                        VStack {
-                            HStack {
-                                Image(p.Image)
-                                    .resizable()
-                                    .frame(width: 120, height: 90)
-                                    .cornerRadius(10)
-                                VStack {
-                                    Text(p.title)
+                    ForEach(data, id: \.self) { p in
+                        if small {
+                            smallcardView(p: p)
+                                .padding()
+                                .frame(width: g.size.width / 1.1, height: 120)
+                                .background(BlurView(style: .light))
+                                .cornerRadius(10)
+                                .padding(.vertical,6)
+                                .onLongPressGesture {
+                                    withAnimation {
+                                        small.toggle()
+                                    }
                                 }
-                            }
-                        }.padding(.all).frame(width: g.size.width / 1.1).background(Color.black.opacity(0.3))
-                        .cornerRadius(10)
+                        } else {
+                            bigcardView(p: p)
+                                .padding()
+                                .frame(width: g.size.width / 1.1, height: 270)
+                                .background(BlurView(style: .light))
+                                .cornerRadius(10)
+                                .padding(.vertical,6)
+                                .onLongPressGesture {
+                                    withAnimation {
+                                        self.small.toggle()
+                                    }
+                                }
+                        }
+                       
                     }
                 }.frame(width: g.size.width)
             }
@@ -143,9 +316,21 @@ struct BlurryBackGroundView: View {
     }
 }
 
+// ----------------- No Space List ---------------
+
+struct NoSpaceList: View {
+    var body: some View {
+        VStack {
+            Text("No Space List")
+        }
+    }
+}
+
+
+
 struct ContentView: View {
     var body: some View {
-        BlurryBackGroundView()
+        NoSpaceList()
     }
 }
 
