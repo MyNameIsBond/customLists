@@ -200,9 +200,7 @@ struct smallcardView: View {
 }
 
 struct bigcardView: View {
-    
     var p: ListData
-    
     
     var body: some View {
         GeometryReader { g in
@@ -242,6 +240,7 @@ struct bigcardView: View {
         }
     }
 }
+
 
 
 struct BlurryBackGroundView: View {
