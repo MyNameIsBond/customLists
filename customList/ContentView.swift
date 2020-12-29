@@ -317,10 +317,29 @@ struct BlurryBackGroundView: View {
 
 // ----------------- No Space List ---------------
 
+
+
 struct NoSpaceList: View {
     var body: some View {
-        VStack {
-            Text("No Space List")
+        ScrollView {
+                HStack {
+                    Image(systemName: "square.grid.4x3.fill")
+                        .font(.title3)
+                    Spacer()
+                    Text("The Happy Programmer")
+                        .font(.title3)
+                    Spacer()
+                    Image(systemName: "magnifyingglass")
+                        .font(.title3)
+                }.padding()
+                
+            GeometryReader { g in
+                
+                ForEach(data) { post in
+                    Text(post.title)
+                    
+                }
+            }
         }
     }
 }
