@@ -335,10 +335,9 @@ struct NoSpaceList: View {
                 
             GeometryReader { g in
                 
-                ForEach(data) { post in
-                    Text(post.title)
-                    
-                }
+                    ForEach(data) { post in
+                        Text(post.title)
+                    }
             }
         }
     }
