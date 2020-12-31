@@ -14,16 +14,16 @@ struct ListData: Identifiable,Hashable {
 
 
 var data = [
-    ListData(title: "LazyHGrid in SwiftUI (part 1/3)", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "LazyGrid",Color: Color.red, percentage: 0.30),
-    ListData(title: "LazyHGrid and LazyVGrid in SwiftUI ", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "LazyGrid2",Color: Color.red, percentage: 0.25),
-    ListData(title: "How to Detect Light/Dark theme", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "themeDetector",Color: Color.green, percentage: 0.10),
-    ListData(title: "Gradient Color in SWiftUI", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "try1",Color: Color.red, percentage: 0.45),
-    ListData(title: "How to Detect Light/Dark theme", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "themeDetector",Color: Color.green, percentage: 0.86),
-    ListData(title: "LazyHGrid in SwiftUI (part 1/3)", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "LazyGrid",Color: Color.red, percentage: 0.30),
-    ListData(title: "LazyHGrid and LazyVGrid in SwiftUI ", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "LazyGrid2",Color: Color.red, percentage: 0.25),
-    ListData(title: "How to Detect Light/Dark theme", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "themeDetector",Color: Color.green, percentage: 0.10),
-    ListData(title: "Gradient Color in SWiftUI", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "try1",Color: Color.red, percentage: 0.45),
-    ListData(title: "How to Detect Light/Dark theme", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "themeDetector",Color: Color.green, percentage: 0.86)
+    ListData(title: "LazyHGrid in SwiftUI (part 1/3)", postType: ["iOS","SwiftUI", "Xcode"], date: "05 Jun", Image: "LazyGrid",Color: Color.lighterPink, percentage: 0.30),
+    ListData(title: "LazyHGrid and LazyVGrid in SwiftUI ", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "LazyGrid2",Color: Color.lighterGray, percentage: 0.25),
+    ListData(title: "How to Detect Light/Dark theme", postType: ["iOS","SwiftUI", "Xcode"], date: "20 Nov", Image: "themeDetector",Color: Color.lightOrange, percentage: 0.10),
+    ListData(title: "Gradient Color in SWiftUI", postType: ["iOS","SwiftUI", "Xcode"], date: "10 Jun", Image: "try1",Color: Color.lightPink, percentage: 0.45),
+    ListData(title: "How to Detect Light/Dark theme", postType: ["iOS","SwiftUI", "Xcode"], date: "05 Feb", Image: "themeDetector",Color: Color.lightGray, percentage: 0.86),
+    ListData(title: "LazyHGrid in SwiftUI (part 1/3)", postType: ["iOS","SwiftUI", "Xcode"], date: "15 Dec", Image: "LazyGrid",Color: Color.lightOrange, percentage: 0.30),
+    ListData(title: "LazyHGrid and LazyVGrid in SwiftUI ", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "LazyGrid2",Color: Color.lighterPink, percentage: 0.25),
+    ListData(title: "How to Detect Light/Dark theme", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "themeDetector",Color: Color.lighterGray, percentage: 0.10),
+    ListData(title: "Gradient Color in SWiftUI", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "try1",Color: Color.lightGray, percentage: 0.45),
+    ListData(title: "How to Detect Light/Dark theme", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "themeDetector",Color: Color.lightOrange, percentage: 0.86)
 ]
 
 extension Color {
@@ -76,7 +76,6 @@ struct simpleListView: View {
                                     Text(String(format: "%.0f%%", m.percentage * 100))
                                         .font(.caption2)
                                         .foregroundColor(Color.gray)
-                                    
                                 }
                             }
                         }
@@ -295,17 +294,17 @@ struct BlurryBackGroundView: View {
                                     }
                                 }
                         } else {
-                            bigcardView(p: p)
-                                .padding()
-                                .frame(width: g.size.width / 1.1, height: 270)
-                                .background(BlurView(style: .light))
-                                .cornerRadius(10)
-                                .padding(.vertical,6)
-                                .onLongPressGesture {
-                                    withAnimation {
-                                        self.small.toggle()
-                                    }
+                        bigcardView(p: p)
+                            .padding()
+                            .frame(width: g.size.width / 1.1, height: 270)
+                            .background(BlurView(style: .light))
+                            .cornerRadius(10)
+                            .padding(.vertical,6)
+                            .onLongPressGesture {
+                                withAnimation {
+                                    self.small.toggle()
                                 }
+                            }
                         }
                        
                     }
@@ -316,14 +315,39 @@ struct BlurryBackGroundView: View {
 }
 
 // ----------------- No Space List ---------------
+extension Color {
+    static let lightPink = Color(red: 236 / 255, green: 188 / 255, blue: 180 / 255)
+    static let lightGray = Color(red: 224 / 255, green: 229 / 255, blue: 236 / 255)
+    static let lightOrange = Color(red: 219 / 255, green: 98 / 255, blue: 68 / 255)
+    static let iconGray = Color(red: 112 / 255, green: 112 / 255, blue: 112 / 255)
+    static let lighterPink = Color(red: 233 / 255, green: 219 / 255, blue: 210 / 255)
+    static let lighterGray = Color(red: 214 / 255, green: 214 / 255, blue: 214 / 255)
+}
 
+
+struct nospaceTags: View {
+    
+    var tags: Array<String>
+    
+    var body: some View {
+        HStack {
+            ForEach(tags, id: \.self) { tag in
+                Text("\(tag)")
+                    .font(.footnote)
+                    .fontWeight(.bold)
+                    .padding(.vertical, 2)
+            }
+        }
+    }
+}
 
 
 struct NoSpaceList: View {
     var body: some View {
+        GeometryReader { g in
         ScrollView {
                 HStack {
-                    Image(systemName: "square.grid.4x3.fill")
+                    Image(systemName: "square.grid.3x3.fill")
                         .font(.title3)
                     Spacer()
                     Text("The Happy Programmer")
@@ -332,13 +356,40 @@ struct NoSpaceList: View {
                     Image(systemName: "magnifyingglass")
                         .font(.title3)
                 }.padding()
-                
-            GeometryReader { g in
-                
+            
+                VStack {
                     ForEach(data) { post in
-                        Text(post.title)
+                        HStack{
+                            HStack(alignment: .top) {
+                                VStack(alignment: .leading) {
+                                    
+                                    Text(post.title)
+                                        .font(.largeTitle)
+                                        .fontWeight(.bold)
+                                    nospaceTags(tags: post.postType)
+                                    Spacer()
+                                    Divider().frame(height: 1).background(Color.black)
+                                    HStack {
+                                        Text("Post Updated")
+                                            .font(.caption)
+                                        Spacer()
+                                        Text(post.date)
+                                            .font(.caption)
+                                    }.padding(.bottom, 20)
+                                }
+                                    Image(systemName: "arrow.right")
+                                        .foregroundColor(.iconGray)
+                                        .font(.largeTitle)
+                                        .frame(height: 30)
+                            }
+                            .padding(.horizontal)
+                            
+                        }
+                        .frame(width: g.size.width, height: g.size.height / 2.5)
+                        .background(post.Color)
                     }
-            }
+                }
+        }.frame(width: g.size.width, height: g.size.height)
         }
     }
 }
