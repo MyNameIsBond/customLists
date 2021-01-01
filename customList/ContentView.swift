@@ -115,7 +115,7 @@ struct blurTags:  View {
 struct BlurView: UIViewRepresentable {
     
     let style: UIBlurEffect.Style
-
+    
     func makeUIView(context: UIViewRepresentableContext<BlurView>) -> UIView {
         let view = UIView(frame: .zero)
         view.backgroundColor = .clear
@@ -129,12 +129,12 @@ struct BlurView: UIViewRepresentable {
         ])
         return view
     }
-
+    
     func updateUIView(_ uiView: UIView,
                       context: UIViewRepresentableContext<BlurView>) {
-
+        
     }
-
+    
 }
 
 struct Stars: View {
@@ -193,7 +193,7 @@ struct smallcardView: View {
                     }
                 }
             }
-           
+            
         }
     }
 }
@@ -294,19 +294,19 @@ struct BlurryBackGroundView: View {
                                     }
                                 }
                         } else {
-                        bigcardView(p: p)
-                            .padding()
-                            .frame(width: g.size.width / 1.1, height: 270)
-                            .background(BlurView(style: .light))
-                            .cornerRadius(10)
-                            .padding(.vertical,6)
-                            .onLongPressGesture {
-                                withAnimation {
-                                    self.small.toggle()
+                            bigcardView(p: p)
+                                .padding()
+                                .frame(width: g.size.width / 1.1, height: 270)
+                                .background(BlurView(style: .light))
+                                .cornerRadius(10)
+                                .padding(.vertical,6)
+                                .onLongPressGesture {
+                                    withAnimation {
+                                        self.small.toggle()
+                                    }
                                 }
-                            }
                         }
-                       
+                        
                     }
                 }.frame(width: g.size.width)
             }
@@ -345,7 +345,7 @@ struct nospaceTags: View {
 struct NoSpaceList: View {
     var body: some View {
         GeometryReader { g in
-        ScrollView {
+            ScrollView {
                 HStack {
                     Image(systemName: "square.grid.3x3.fill")
                         .font(.title3)
@@ -356,13 +356,12 @@ struct NoSpaceList: View {
                     Image(systemName: "magnifyingglass")
                         .font(.title3)
                 }.padding()
-            
+                
                 VStack {
                     ForEach(data) { post in
                         HStack{
                             HStack(alignment: .top) {
                                 VStack(alignment: .leading) {
-                                    
                                     Text(post.title)
                                         .font(.largeTitle)
                                         .fontWeight(.bold)
@@ -376,11 +375,11 @@ struct NoSpaceList: View {
                                         Text(post.date)
                                             .font(.caption)
                                     }.padding(.bottom, 20)
-                                }
-                                    Image(systemName: "arrow.right")
-                                        .foregroundColor(.iconGray)
-                                        .font(.largeTitle)
-                                        .frame(height: 30)
+                                }.padding(.vertical)
+                                
+                                Image(systemName: "arrow.right")
+                                    .foregroundColor(.iconGray)
+                                    .font(.largeTitle)
                             }
                             .padding(.horizontal)
                             
@@ -389,7 +388,7 @@ struct NoSpaceList: View {
                         .background(post.Color)
                     }
                 }
-        }.frame(width: g.size.width, height: g.size.height)
+            }.frame(width: g.size.width, height: g.size.height)
         }
     }
 }
