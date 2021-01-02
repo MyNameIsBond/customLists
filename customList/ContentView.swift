@@ -324,7 +324,6 @@ extension Color {
     static let lighterGray = Color(red: 214 / 255, green: 214 / 255, blue: 214 / 255)
 }
 
-
 struct nospaceTags: View {
     
     var tags: Array<String>
@@ -341,7 +340,6 @@ struct nospaceTags: View {
     }
 }
 
-
 struct NoSpaceList: View {
     var body: some View {
         GeometryReader { g in
@@ -355,19 +353,19 @@ struct NoSpaceList: View {
                     Spacer()
                     Image(systemName: "magnifyingglass")
                         .font(.title3)
-                }.padding()
+                }.padding().ignoresSafeArea()
                 
                 VStack {
                     ForEach(data) { post in
                         HStack{
-                            HStack(alignment: .top) {
+                            HStack(alignment: .firstTextBaseline) {
                                 VStack(alignment: .leading) {
                                     Text(post.title)
                                         .font(.largeTitle)
                                         .fontWeight(.bold)
                                     nospaceTags(tags: post.postType)
                                     Spacer()
-                                    Divider().frame(height: 1).background(Color.black)
+                                    Divider().frame(height: 0.5).background(Color.black)
                                     HStack {
                                         Text("Post Updated")
                                             .font(.caption)
@@ -375,13 +373,14 @@ struct NoSpaceList: View {
                                         Text(post.date)
                                             .font(.caption)
                                     }.padding(.bottom, 20)
-                                }.padding(.vertical)
+                                }.padding(.top, 30)
                                 
                                 Image(systemName: "arrow.right")
                                     .foregroundColor(.iconGray)
                                     .font(.largeTitle)
                             }
                             .padding(.horizontal)
+                            
                             
                         }
                         .frame(width: g.size.width, height: g.size.height / 2.5)
@@ -392,8 +391,6 @@ struct NoSpaceList: View {
         }
     }
 }
-
-
 
 struct ContentView: View {
     var body: some View {
