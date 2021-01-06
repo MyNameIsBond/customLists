@@ -439,6 +439,7 @@ struct NospaceListDestination: View {
                                     .cornerRadius(50)
                             })
                         }
+                        
                         .padding(.horizontal)
                         .padding(.bottom)
                         .padding(.top, UIApplication.shared.windows.first?.safeAreaInsets.top)
@@ -490,12 +491,12 @@ struct NospaceListDestination: View {
 
 struct ContentView: View {
     var body: some View {
-        NoSpaceList()
+        BlurryBackGroundView()
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        NospaceListDestination(post: data[0])
+        BlurryBackGroundView()
     }
 }
