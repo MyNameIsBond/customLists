@@ -107,6 +107,7 @@ struct blurTags:  View {
                     .fontWeight(.semibold)
                     .foregroundColor(.subtextColor)
                     .font(.caption)
+                    .matchedGeometryEffect(id: "tags", in: Namespace)
             }
         }
     }
@@ -162,6 +163,7 @@ struct Stars: View {
 struct smallcardView: View {
     
     var p: ListData
+    let namespace: Namespace.ID
     
     var body: some View {
         GeometryReader { g in
@@ -171,24 +173,30 @@ struct smallcardView: View {
                         .resizable()
                         .frame(width: 120, height: 90)
                         .cornerRadius(10)
+                        .matchedGeometryEffect(id: "image", in: namespace)
                     Spacer()
                     VStack(alignment: .leading) {
                         blurTags(tags: p.postType)
+                            .matchedGeometryEffect(id: "tags", in: namespace)
                         Spacer()
                         Text(p.title)
                             .foregroundColor(Color.textColor)
+                            .matchedGeometryEffect(id: "title", in: namespace)
                         Spacer()
                         HStack {
                             Stars()
+                                .matchedGeometryEffect(id: "stars", in: namespace)
                             Text("(100)")
                                 .font(.caption2)
                                 .foregroundColor(.subtextColor)
+                                .matchedGeometryEffect(id: "ratingNum", in: namespace)
                         }
                     }
                     Spacer()
                     VStack {
                         Image(systemName: "ellipsis")
                             .foregroundColor(Color.white)
+                            .matchedGeometryEffect(id: "ellipsis", in: namespace)
                         Spacer()
                     }
                 }
@@ -200,7 +208,7 @@ struct smallcardView: View {
 
 struct bigcardView: View {
     var p: ListData
-    
+    let namespace: Namespace.ID
     var body: some View {
         GeometryReader { g in
             VStack(alignment: .leading) {
@@ -209,6 +217,8 @@ struct bigcardView: View {
                         .resizable()
                         .frame(width: g.size.width / 1.2, height: 160)
                         .cornerRadius(10)
+                        .matchedGeometryEffect(id: "image", in: namespace)
+                    
                     Spacer()
                     VStack(alignment: .leading) {
                         HStack {
@@ -216,17 +226,21 @@ struct bigcardView: View {
                             Spacer()
                             Image(systemName: "ellipsis")
                                 .foregroundColor(Color.white)
+                                .matchedGeometryEffect(id: "ellipsis", in: namespace)
                         }
                         
                         Spacer()
                         Text(p.title)
                             .foregroundColor(Color.textColor)
+                            .matchedGeometryEffect(id: "title", in: namespace)
                         Spacer()
                         HStack {
                             Stars()
+                                .matchedGeometryEffect(id: "stars", in: namespace)
                             Text("(100)")
                                 .font(.caption2)
                                 .foregroundColor(.subtextColor)
+                                .matchedGeometryEffect(id: "ratingNum", in: namespace)
                         }
                     }
                     Spacer()
@@ -243,6 +257,7 @@ struct bigcardView: View {
 struct BlurryBackGroundView: View {
     
     @State var small = true
+    @Namespace var namespace
     
     var body: some View {
         
@@ -261,7 +276,6 @@ struct BlurryBackGroundView: View {
             }
             
             GeometryReader { g in
-                
                 ScrollView {
                     VStack {
                         HStack {
@@ -279,38 +293,54 @@ struct BlurryBackGroundView: View {
                         }.padding(.horizontal)
                     }
                     ForEach(data, id: \.self) { p in
-                        if small {
-                            smallcardView(p: p)
-                                .padding()
-                                .frame(width: g.size.width / 1.1, height: 120)
-                                .background(BlurView(style: .light))
-                                .cornerRadius(10)
-                                .padding(.vertical,6)
-                                .onLongPressGesture {
-                                    withAnimation {
-                                        small.toggle()
+                        Group {
+                            switch position {
+                            case .small:
+                                smallcardView(p: p, namespace: namespace)
+                                    .padding()
+                                    .frame(width: g.size.width / 1.1, height: 120)
+                                    .background(BlurView(style: .light))
+                                    .cornerRadius(10)
+                                    .padding(.vertical,6)
+                                    .onLongPressGesture {
+                                        withAnimation {
+                                            self.position.next()
+                                        }
                                     }
-                                }
-                        } else {
-                            bigcardView(p: p)
-                                .padding()
-                                .frame(width: g.size.width / 1.1, height: 270)
-                                .background(BlurView(style: .light))
-                                .cornerRadius(10)
-                                .padding(.vertical,6)
-                                .onLongPressGesture {
-                                    withAnimation {
-                                        self.small.toggle()
+                            case .big:
+                                bigcardView(p: p, namespace: namespace)
+                                    .padding()
+                                    .frame(width: g.size.width / 1.1, height: 270)
+                                    .background(BlurView(style: .light))
+                                    .cornerRadius(10)
+                                    .padding(.vertical,6)
+                                    .onLongPressGesture {
+                                        withAnimation {
+                                            
+                                        }
                                     }
-                                }
+                            }
                         }
-                        
                     }
                 }.frame(width: g.size.width)
             }
         }
     }
 }
+
+enum Card: CaseIterable {
+    case small, big
+    
+    switch self {
+    case .small:
+        .small
+    case .big:
+        .big
+    
+    }
+}
+
+
 
 // ----------------- No Space List ---------------
 extension Color {
