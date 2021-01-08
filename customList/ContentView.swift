@@ -99,7 +99,7 @@ extension Color {
 struct blurTags:  View {
     
     var tags: Array<String>
-    
+    let namespace: Namespace.ID
     var body: some View {
         HStack {
             ForEach(tags, id: \.self) { tag in
@@ -107,9 +107,9 @@ struct blurTags:  View {
                     .fontWeight(.semibold)
                     .foregroundColor(.subtextColor)
                     .font(.caption)
-                    .matchedGeometryEffect(id: "tags", in: Namespace)
+                    
             }
-        }
+        }.matchedGeometryEffect(id: "tags", in: namespace)
     }
 }
 
@@ -176,8 +176,7 @@ struct smallcardView: View {
                         .matchedGeometryEffect(id: "image", in: namespace)
                     Spacer()
                     VStack(alignment: .leading) {
-                        blurTags(tags: p.postType)
-                            .matchedGeometryEffect(id: "tags", in: namespace)
+                        blurTags(tags: p.postType, namespace: namespace)
                         Spacer()
                         Text(p.title)
                             .foregroundColor(Color.textColor)
@@ -201,7 +200,6 @@ struct smallcardView: View {
                     }
                 }
             }
-            
         }
     }
 }
@@ -218,11 +216,10 @@ struct bigcardView: View {
                         .frame(width: g.size.width / 1.2, height: 160)
                         .cornerRadius(10)
                         .matchedGeometryEffect(id: "image", in: namespace)
-                    
                     Spacer()
                     VStack(alignment: .leading) {
                         HStack {
-                            blurTags(tags: p.postType)
+                            blurTags(tags: p.postType, namespace: namespace)
                             Spacer()
                             Image(systemName: "ellipsis")
                                 .foregroundColor(Color.white)
@@ -245,7 +242,6 @@ struct bigcardView: View {
                     }
                     Spacer()
                     VStack {
-                        
                         Spacer()
                     }
                 }
@@ -254,10 +250,55 @@ struct bigcardView: View {
     }
 }
 
+struct CardDetector: View {
+    
+    var p: ListData
+    @State var position: CardPosition
+    @Namespace var namespace
+    var body: some View {
+        GeometryReader { g in
+            VStack(alignment: .center) {
+                HStack {
+                    Group {
+                        switch position {
+                        case .small:
+                        smallcardView(p: p, namespace: namespace)
+                            .padding()
+                            .frame(width: g.size.width / 1.1, height: 120)
+                            .background(Color.black.opacity(0.5))
+                            .cornerRadius(10)
+                            .padding(.vertical,6)
+                            .onLongPressGesture {
+                                withAnimation {
+                                    position = .big
+                                }
+                            }
+                        case .big:
+                        bigcardView(p: p, namespace: namespace)
+                            .padding()
+                            .frame(width: g.size.width / 1.1, height: 270)
+                            .background(Color.black.opacity(0.5))
+                            .cornerRadius(10)
+                            .padding(.vertical,6)
+                            .onLongPressGesture {
+                                withAnimation {
+                                    position = .small
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+        }
+    }
+}
+
 struct BlurryBackGroundView: View {
     
     @State var small = true
     @Namespace var namespace
+    @State private var position: CardPosition = .small
     
     var body: some View {
         
@@ -277,7 +318,7 @@ struct BlurryBackGroundView: View {
             
             GeometryReader { g in
                 ScrollView {
-                    VStack {
+                    VStack(alignment: .center) {
                         HStack {
                             Image(systemName: "text.justify")
                                 .font(.title3)
@@ -291,35 +332,8 @@ struct BlurryBackGroundView: View {
                                 .font(.title2)
                                 .foregroundColor(Color.white)
                         }.padding(.horizontal)
-                    }
-                    ForEach(data, id: \.self) { p in
-                        Group {
-                            switch position {
-                            case .small:
-                                smallcardView(p: p, namespace: namespace)
-                                    .padding()
-                                    .frame(width: g.size.width / 1.1, height: 120)
-                                    .background(BlurView(style: .light))
-                                    .cornerRadius(10)
-                                    .padding(.vertical,6)
-                                    .onLongPressGesture {
-                                        withAnimation {
-                                            self.position.next()
-                                        }
-                                    }
-                            case .big:
-                                bigcardView(p: p, namespace: namespace)
-                                    .padding()
-                                    .frame(width: g.size.width / 1.1, height: 270)
-                                    .background(BlurView(style: .light))
-                                    .cornerRadius(10)
-                                    .padding(.vertical,6)
-                                    .onLongPressGesture {
-                                        withAnimation {
-                                            
-                                        }
-                                    }
-                            }
+                        ForEach(data, id: \.self) { p in
+                            CardDetector(p:p, position: self.position)
                         }
                     }
                 }.frame(width: g.size.width)
@@ -328,16 +342,8 @@ struct BlurryBackGroundView: View {
     }
 }
 
-enum Card: CaseIterable {
+enum CardPosition: CaseIterable {
     case small, big
-    
-    switch self {
-    case .small:
-        .small
-    case .big:
-        .big
-    
-    }
 }
 
 
