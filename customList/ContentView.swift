@@ -9,21 +9,22 @@ struct ListData: Identifiable,Hashable {
     var Image: String
     var Color: Color
     var percentage: GLfloat
+    var stars: Int
 }
 
 
 
 var data = [
-    ListData(title: "LazyHGrid in SwiftUI (part 1/3)", postType: ["iOS","SwiftUI", "Xcode"], date: "05 Jun", Image: "LazyGrid",Color: Color.lighterPink, percentage: 0.30),
-    ListData(title: "LazyHGrid and LazyVGrid in SwiftUI ", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "LazyGrid2",Color: Color.lighterGray, percentage: 0.25),
-    ListData(title: "How to Detect Light/Dark theme", postType: ["iOS","SwiftUI", "Xcode"], date: "20 Nov", Image: "themeDetector",Color: Color.lightOrange, percentage: 0.10),
-    ListData(title: "Gradient Color in SWiftUI", postType: ["iOS","SwiftUI", "Xcode"], date: "10 Jun", Image: "try1",Color: Color.lightPink, percentage: 0.45),
-    ListData(title: "How to Detect Light/Dark theme", postType: ["iOS","SwiftUI", "Xcode"], date: "05 Feb", Image: "themeDetector",Color: Color.lightGray, percentage: 0.86),
-    ListData(title: "LazyHGrid in SwiftUI (part 1/3)", postType: ["iOS","SwiftUI", "Xcode"], date: "15 Dec", Image: "LazyGrid",Color: Color.lightOrange, percentage: 0.30),
-    ListData(title: "LazyHGrid and LazyVGrid in SwiftUI ", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "LazyGrid2",Color: Color.lighterPink, percentage: 0.25),
-    ListData(title: "How to Detect Light/Dark theme", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "themeDetector",Color: Color.lighterGray, percentage: 0.10),
-    ListData(title: "Gradient Color in SWiftUI", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "try1",Color: Color.lightGray, percentage: 0.45),
-    ListData(title: "How to Detect Light/Dark theme", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "themeDetector",Color: Color.lightOrange, percentage: 0.86)
+    ListData(title: "LazyHGrid in SwiftUI (part 1/3)", postType: ["iOS","SwiftUI", "Xcode"], date: "05 Jun", Image: "LazyGrid",Color: Color.lighterPink, percentage: 0.30, stars: 5),
+    ListData(title: "LazyHGrid and LazyVGrid in SwiftUI ", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "LazyGrid2",Color: Color.lighterGray, percentage: 0.25, stars: 4),
+    ListData(title: "How to Detect Light/Dark theme", postType: ["iOS","SwiftUI", "Xcode"], date: "20 Nov", Image: "themeDetector",Color: Color.lightOrange, percentage: 0.10, stars: 3),
+    ListData(title: "Gradient Color in SWiftUI", postType: ["iOS","SwiftUI", "Xcode"], date: "10 Jun", Image: "try1",Color: Color.lightPink, percentage: 0.45, stars: 2),
+    ListData(title: "How to Detect Light/Dark theme", postType: ["iOS","SwiftUI", "Xcode"], date: "05 Feb", Image: "themeDetector",Color: Color.lightGray, percentage: 0.86, stars: 5),
+    ListData(title: "LazyHGrid in SwiftUI (part 1/3)", postType: ["iOS","SwiftUI", "Xcode"], date: "15 Dec", Image: "LazyGrid",Color: Color.lightOrange, percentage: 0.30, stars: 3),
+    ListData(title: "LazyHGrid and LazyVGrid in SwiftUI ", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "LazyGrid2",Color: Color.lighterPink, percentage: 0.25, stars: 2),
+    ListData(title: "How to Detect Light/Dark theme", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "themeDetector",Color: Color.lighterGray, percentage: 0.10, stars: 3),
+    ListData(title: "Gradient Color in SWiftUI", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "try1",Color: Color.lightGray, percentage: 0.45, stars: 4),
+    ListData(title: "How to Detect Light/Dark theme", postType: ["iOS","SwiftUI", "Xcode"], date: "15 dec", Image: "themeDetector",Color: Color.lightOrange, percentage: 0.86, stars: 5)
 ]
 
 extension Color {
@@ -139,23 +140,25 @@ struct BlurView: UIViewRepresentable {
 }
 
 struct Stars: View {
+    
+    var star: Int
+    
     var body: some View {
         HStack(spacing: 5) {
-            Image(systemName: "star.fill")
-                .foregroundColor(Color.yellow)
-                .font(.caption)
-            Image(systemName: "star.fill")
-                .foregroundColor(Color.yellow)
-                .font(.caption)
-            Image(systemName: "star.fill")
-                .foregroundColor(Color.yellow)
-                .font(.caption)
-            Image(systemName: "star.fill")
-                .foregroundColor(Color.white)
-                .font(.caption)
-            Image(systemName: "star.fill")
-                .foregroundColor(Color.white)
-                .font(.caption)
+            
+            ForEach(1...star, id: \.self) { e in
+                Image(systemName: "star.fill")
+                    .foregroundColor(Color.yellow)
+                    .font(.caption)
+                }
+            if star >= 5 {
+                let e = star - 5
+                ForEach(1...e, id: \.self) { e in
+                    Image(systemName: "star.fill")
+                        .foregroundColor(Color.gray)
+                        .font(.caption)
+                }
+            }
         }
     }
 }
@@ -174,7 +177,7 @@ struct smallcardView: View {
                         .frame(width: 120, height: 90)
                         .cornerRadius(10)
                         .matchedGeometryEffect(id: "image", in: namespace)
-                    Spacer()
+                    
                     VStack(alignment: .leading) {
                         blurTags(tags: p.postType, namespace: namespace)
                         Spacer()
@@ -183,14 +186,14 @@ struct smallcardView: View {
                             .matchedGeometryEffect(id: "title", in: namespace)
                         Spacer()
                         HStack {
-                            Stars()
+                            Stars(star: 5)
                                 .matchedGeometryEffect(id: "stars", in: namespace)
                             Text("(100)")
                                 .font(.caption2)
                                 .foregroundColor(.subtextColor)
                                 .matchedGeometryEffect(id: "ratingNum", in: namespace)
                         }
-                    }
+                    }.padding(.leading)
                     Spacer()
                     VStack {
                         Image(systemName: "ellipsis")
@@ -208,12 +211,12 @@ struct bigcardView: View {
     var p: ListData
     let namespace: Namespace.ID
     var body: some View {
-        GeometryReader { g in
             VStack(alignment: .leading) {
                 VStack(alignment: .leading) {
                     Image(p.Image)
                         .resizable()
-                        .frame(width: g.size.width / 1.2, height: 160)
+                        .frame(height: 160)
+                        .frame(maxHeight: .infinity)
                         .cornerRadius(10)
                         .matchedGeometryEffect(id: "image", in: namespace)
                     Spacer()
@@ -232,7 +235,7 @@ struct bigcardView: View {
                             .matchedGeometryEffect(id: "title", in: namespace)
                         Spacer()
                         HStack {
-                            Stars()
+                            Stars(star: p.stars)
                                 .matchedGeometryEffect(id: "stars", in: namespace)
                             Text("(100)")
                                 .font(.caption2)
@@ -244,10 +247,13 @@ struct bigcardView: View {
                     VStack {
                         Spacer()
                     }
-                }
             }
         }
     }
+}
+
+enum CardPosition: CaseIterable {
+    case small, big
 }
 
 struct CardDetector: View {
@@ -256,42 +262,40 @@ struct CardDetector: View {
     @State var position: CardPosition
     @Namespace var namespace
     var body: some View {
-        GeometryReader { g in
-            VStack(alignment: .center) {
-                HStack {
-                    Group {
-                        switch position {
-                        case .small:
-                        smallcardView(p: p, namespace: namespace)
-                            .padding()
-                            .frame(width: g.size.width / 1.1, height: 120)
-                            .background(Color.black.opacity(0.5))
-                            .cornerRadius(10)
-                            .padding(.vertical,6)
-                            .onLongPressGesture {
-                                withAnimation {
-                                    position = .big
-                                }
-                            }
-                        case .big:
-                        bigcardView(p: p, namespace: namespace)
-                            .padding()
-                            .frame(width: g.size.width / 1.1, height: 270)
-                            .background(Color.black.opacity(0.5))
-                            .cornerRadius(10)
-                            .padding(.vertical,6)
-                            .onLongPressGesture {
-                                withAnimation {
-                                    position = .small
-                                }
-                            }
+        
+            Group {
+                switch position {
+                case .small:
+                smallcardView(p: p, namespace: namespace)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 120)
+                    .background(BlurView(style: .regular))
+                    .cornerRadius(10)
+                    .padding(.vertical,6)
+                    .onLongPressGesture {
+                        withAnimation {
+                            position = .big
                         }
                     }
+                    .padding(.horizontal)
+                case .big:
+                bigcardView(p: p, namespace: namespace)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 270)
+                    .background(BlurView(style: .regular))
+                    .cornerRadius(10)
+                    .padding(.vertical,6)
+                    .onLongPressGesture {
+                        withAnimation {
+                            position = .small
+                        }
+                    }
+                    .padding(.horizontal)
                 }
             }
-            
         }
-    }
 }
 
 struct BlurryBackGroundView: View {
@@ -302,49 +306,46 @@ struct BlurryBackGroundView: View {
     
     var body: some View {
         
-        ZStack {
-            LinearGradient(gradient: Gradient(colors: [Color.pinkColor, Color.purpleColor]), startPoint: .topLeading, endPoint: .bottomTrailing).ignoresSafeArea()
-            VStack {
-                Capsule()
-                    .fill(Color.OrangeColor)
-                    .frame(width: 200, height: 200)
-                    .offset(x: -150, y: -55)
-                Spacer()
-                Capsule()
-                    .fill(Color.OrangeColor)
-                    .frame(width: 200, height: 200)
-                    .offset(x: 150, y: 105)
-            }
-            
-            GeometryReader { g in
+        HStack {
+            ZStack {
+                LinearGradient(gradient: Gradient(colors: [Color.pinkColor, Color.purpleColor]), startPoint: .topLeading, endPoint: .bottomTrailing).ignoresSafeArea()
+                VStack {
+                    Capsule()
+                        .fill(Color.OrangeColor)
+                        .frame(width: 200, height: 200)
+                        .offset(x: -150, y: -55)
+                    Spacer()
+                    Capsule()
+                        .fill(Color.OrangeColor)
+                        .frame(width: 200, height: 200)
+                        .offset(x: 150, y: 105)
+                }
                 ScrollView {
-                    VStack(alignment: .center) {
-                        HStack {
-                            Image(systemName: "text.justify")
-                                .font(.title3)
-                                .foregroundColor(Color.white)
-                            Spacer()
-                            Image("logo")
-                                .resizable()
-                                .frame(width: 130, height: 40)
-                            Spacer()
-                            Image(systemName: "bell")
-                                .font(.title2)
-                                .foregroundColor(Color.white)
-                        }.padding(.horizontal)
+                    HStack {
+                        Image(systemName: "text.justify")
+                            .font(.title3)
+                            .foregroundColor(Color.white)
+                        Spacer()
+                        Image("logo")
+                            .resizable()
+                            .frame(width: 130, height: 40)
+                        Spacer()
+                        Image(systemName: "bell")
+                            .font(.title2)
+                            .foregroundColor(Color.white)
+                    }.padding(.horizontal)
+                    VStack {
                         ForEach(data, id: \.self) { p in
                             CardDetector(p:p, position: self.position)
                         }
                     }
-                }.frame(width: g.size.width)
+                }.frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
     }
 }
 
-enum CardPosition: CaseIterable {
-    case small, big
-}
+
 
 
 
@@ -391,7 +392,7 @@ struct NoSpaceList: View {
                         Image(systemName: "magnifyingglass")
                             .font(.title3)
                     }.padding().ignoresSafeArea()
-                    
+                      
                     VStack {
                         ForEach(data) { post in
                             NavigationLink(destination: NospaceListDestination(post: post)) {
@@ -521,6 +522,8 @@ struct NospaceListDestination: View {
 }
 
 // ------------------------------------------
+
+
 
 
 
