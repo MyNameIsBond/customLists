@@ -52,6 +52,8 @@ struct tags: View {
 }
 
 struct simpleListView: View {
+    
+    
     var body: some View {
         NavigationView {
             List(data) { m in
@@ -82,13 +84,19 @@ struct simpleListView: View {
                         }
                     }
                 }
+                
             }
-            .navigationTitle("Post List")
+            .navigationTitle("Posts")
+           
         }
     }
+    
+   
 }
 
+
 // Blurry back ground Cards --------------------------------------
+
 
 //blurrybackground
 
@@ -151,8 +159,9 @@ struct Stars: View {
                     .foregroundColor(Color.yellow)
                     .font(.caption)
                 }
-            if star >= 5 {
-                let e = star - 5
+            if star < 5 {
+                
+                let e = 5 - star
                 ForEach(1...e, id: \.self) { e in
                     Image(systemName: "star.fill")
                         .foregroundColor(Color.gray)
@@ -186,7 +195,7 @@ struct smallcardView: View {
                             .matchedGeometryEffect(id: "title", in: namespace)
                         Spacer()
                         HStack {
-                            Stars(star: 5)
+                            Stars(star: p.stars)
                                 .matchedGeometryEffect(id: "stars", in: namespace)
                             Text("(100)")
                                 .font(.caption2)
@@ -305,7 +314,6 @@ struct BlurryBackGroundView: View {
     @State private var position: CardPosition = .small
     
     var body: some View {
-        
         HStack {
             ZStack {
                 LinearGradient(gradient: Gradient(colors: [Color.pinkColor, Color.purpleColor]), startPoint: .topLeading, endPoint: .bottomTrailing).ignoresSafeArea()
@@ -530,12 +538,12 @@ struct NospaceListDestination: View {
 
 struct ContentView: View {
     var body: some View {
-        BlurryBackGroundView()
+        simpleListView()
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        BlurryBackGroundView()
+        simpleListView()
     }
 }
