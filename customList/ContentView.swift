@@ -1,7 +1,7 @@
 
 import SwiftUI
 
-struct ListData: Identifiable,Hashable {
+struct ListData: Identifiable, Hashable {
     var id = UUID()
     var title: String
     var postType: Array<String>
@@ -52,52 +52,49 @@ struct tags: View {
 }
 
 struct SimpleListView: View {
-
+    
     @State var d = data
-
+    
     var body: some View {
         NavigationView {
             List {
-                
-                Section(header: GroupedListHeader(), footer: GroupedListFooter()) {
-                    ForEach(d, id: \.self) { m in
-                        VStack {
-                            NavigationLink(destination: Text(m.title)) {
-                                HStack{
-                                    Image(m.Image)
-                                        .resizable()
-                                        .frame(width: 120, height: 90)
-                                    VStack(alignment: .leading, spacing: 8) {
-                                        tags(tags: m.postType)
-                                        Text(m.title)
-                                            .bold()
-                                            .font(.subheadline)
-                                            .lineLimit(1)
-                                        Text("The Happy Programmer")
+                ForEach(d, id: \.self) { m in
+                    VStack {
+                        NavigationLink(destination: Text(m.title)) {
+                            HStack{
+                                Image(m.Image)
+                                    .resizable()
+                                    .frame(width: 120, height: 90)
+                                VStack(alignment: .leading, spacing: 8) {
+                                    tags(tags: m.postType)
+                                    Text(m.title)
+                                        .bold()
+                                        .font(.subheadline)
+                                        .lineLimit(1)
+                                    Text("The Happy Programmer")
+                                        .font(.caption2)
+                                        .foregroundColor(Color.gray)
+                                    HStack {
+                                        ProgressView(value: m.percentage)
+                                            .progressViewStyle(LinearProgressViewStyle(tint: Color.pinkColor))
+                                            .foregroundColor(Color.red)
+                                        Text(String(format: "%.0f%%", m.percentage * 100))
                                             .font(.caption2)
                                             .foregroundColor(Color.gray)
-                                        HStack {
-                                            ProgressView(value: m.percentage)
-                                                .progressViewStyle(LinearProgressViewStyle(tint: Color.pinkColor))
-                                                .foregroundColor(Color.red)
-                                            Text(String(format: "%.0f%%", m.percentage * 100))
-                                                .font(.caption2)
-                                                .foregroundColor(Color.gray)
-                                        }
                                     }
                                 }
                             }
                         }
-                    }.onDelete(perform: self.deleteItem)
-                }
+                    }
+                }.onDelete(perform: self.deleteItem)
             }.listStyle(GroupedListStyle())
             .navigationTitle("Posts")
         }
     }
     
     private func deleteItem(at indexSet: IndexSet) {
-            self.d.remove(atOffsets: indexSet)
-        }
+        self.d.remove(atOffsets: indexSet)
+    }
 }
 
 
@@ -114,7 +111,7 @@ struct GroupedListHeader: View {
     var body: some View {
         HStack {
             Image(systemName: "tray.full.fill")
-            Text("All Posts from The Happy Programmer")
+            Text("All Posts from The Happy programmer")
         }
     }
 }
