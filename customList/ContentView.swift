@@ -51,49 +51,73 @@ struct tags: View {
     }
 }
 
-struct simpleListView: View {
-    
-    
+struct SimpleListView: View {
+
+    @State var d = data
+
     var body: some View {
         NavigationView {
-            List(data) { m in
-                VStack {
-                    NavigationLink(destination: Text(m.title)) {
-                        HStack{
-                            Image(m.Image)
-                                .resizable()
-                                .frame(width: 120, height: 90)
-                            VStack(alignment: .leading, spacing: 8) {
-                                tags(tags: m.postType)
-                                Text(m.title)
-                                    .bold()
-                                    .font(.subheadline)
-                                    .lineLimit(1)
-                                Text("The Happy Programmer")
-                                    .font(.caption2)
-                                    .foregroundColor(Color.gray)
-                                HStack {
-                                    ProgressView(value: m.percentage)
-                                        .progressViewStyle(LinearProgressViewStyle(tint: Color.pinkColor))
-                                        .foregroundColor(Color.red)
-                                    Text(String(format: "%.0f%%", m.percentage * 100))
-                                        .font(.caption2)
-                                        .foregroundColor(Color.gray)
+            List {
+                
+                Section(header: GroupedListHeader(), footer: GroupedListFooter()) {
+                    ForEach(d, id: \.self) { m in
+                        VStack {
+                            NavigationLink(destination: Text(m.title)) {
+                                HStack{
+                                    Image(m.Image)
+                                        .resizable()
+                                        .frame(width: 120, height: 90)
+                                    VStack(alignment: .leading, spacing: 8) {
+                                        tags(tags: m.postType)
+                                        Text(m.title)
+                                            .bold()
+                                            .font(.subheadline)
+                                            .lineLimit(1)
+                                        Text("The Happy Programmer")
+                                            .font(.caption2)
+                                            .foregroundColor(Color.gray)
+                                        HStack {
+                                            ProgressView(value: m.percentage)
+                                                .progressViewStyle(LinearProgressViewStyle(tint: Color.pinkColor))
+                                                .foregroundColor(Color.red)
+                                            Text(String(format: "%.0f%%", m.percentage * 100))
+                                                .font(.caption2)
+                                                .foregroundColor(Color.gray)
+                                        }
+                                    }
                                 }
                             }
                         }
-                    }
+                    }.onDelete(perform: self.deleteItem)
                 }
-                
-            }
+            }.listStyle(GroupedListStyle())
             .navigationTitle("Posts")
-           
         }
     }
     
-   
+    private func deleteItem(at indexSet: IndexSet) {
+            self.d.remove(atOffsets: indexSet)
+        }
 }
 
+
+struct GroupedListFooter: View {
+    var body: some View {
+        HStack {
+            Image(systemName: "creditcard")
+            Text("Please support me on Patreon")
+        }
+    }
+}
+
+struct GroupedListHeader: View {
+    var body: some View {
+        HStack {
+            Image(systemName: "tray.full.fill")
+            Text("All Posts from The Happy Programmer")
+        }
+    }
+}
 
 // Blurry back ground Cards --------------------------------------
 
@@ -532,18 +556,14 @@ struct NospaceListDestination: View {
 // ------------------------------------------
 
 
-
-
-
-
 struct ContentView: View {
     var body: some View {
-        simpleListView()
+        SimpleListView()
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        simpleListView()
+        SimpleListView()
     }
 }
