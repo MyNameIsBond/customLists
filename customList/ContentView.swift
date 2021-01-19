@@ -87,7 +87,7 @@ struct SimpleListView: View {
                         }
                     }
                 }.onDelete(perform: self.deleteItem)
-            }.listStyle(GroupedListStyle())
+            }.listStyle(SidebarListStyle())
             .navigationTitle("Posts")
         }
     }
@@ -165,7 +165,6 @@ struct BlurView: UIViewRepresentable {
                       context: UIViewRepresentableContext<BlurView>) {
         
     }
-    
 }
 
 struct Stars: View {
@@ -241,42 +240,42 @@ struct bigcardView: View {
     var p: ListData
     let namespace: Namespace.ID
     var body: some View {
+        VStack(alignment: .leading) {
             VStack(alignment: .leading) {
+                Image(p.Image)
+                    .resizable()
+                    .frame(height: 160)
+                    .frame(maxHeight: .infinity)
+                    .cornerRadius(10)
+                    .matchedGeometryEffect(id: "image", in: namespace)
+                Spacer()
                 VStack(alignment: .leading) {
-                    Image(p.Image)
-                        .resizable()
-                        .frame(height: 160)
-                        .frame(maxHeight: .infinity)
-                        .cornerRadius(10)
-                        .matchedGeometryEffect(id: "image", in: namespace)
-                    Spacer()
-                    VStack(alignment: .leading) {
-                        HStack {
-                            blurTags(tags: p.postType, namespace: namespace)
-                            Spacer()
-                            Image(systemName: "ellipsis")
-                                .foregroundColor(Color.white)
-                                .matchedGeometryEffect(id: "ellipsis", in: namespace)
-                        }
-                        
+                    HStack {
+                        blurTags(tags: p.postType, namespace: namespace)
                         Spacer()
-                        Text(p.title)
-                            .foregroundColor(Color.textColor)
-                            .matchedGeometryEffect(id: "title", in: namespace)
-                        Spacer()
-                        HStack {
-                            Stars(star: p.stars)
-                                .matchedGeometryEffect(id: "stars", in: namespace)
-                            Text("(100)")
-                                .font(.caption2)
-                                .foregroundColor(.subtextColor)
-                                .matchedGeometryEffect(id: "ratingNum", in: namespace)
-                        }
+                        Image(systemName: "ellipsis")
+                            .foregroundColor(Color.white)
+                            .matchedGeometryEffect(id: "ellipsis", in: namespace)
                     }
+                    
                     Spacer()
-                    VStack {
-                        Spacer()
+                    Text(p.title)
+                        .foregroundColor(Color.textColor)
+                        .matchedGeometryEffect(id: "title", in: namespace)
+                    Spacer()
+                    HStack {
+                        Stars(star: p.stars)
+                            .matchedGeometryEffect(id: "stars", in: namespace)
+                        Text("(100)")
+                            .font(.caption2)
+                            .foregroundColor(.subtextColor)
+                            .matchedGeometryEffect(id: "ratingNum", in: namespace)
                     }
+                }
+                Spacer()
+                VStack {
+                    Spacer()
+                }
             }
         }
     }
@@ -421,44 +420,42 @@ struct NoSpaceList: View {
                         Image(systemName: "magnifyingglass")
                             .font(.title3)
                     }.padding().ignoresSafeArea()
-                      
+                    
                     VStack {
                         ForEach(data) { post in
                             NavigationLink(destination: NospaceListDestination(post: post)) {
-                            HStack{
-                                HStack(alignment: .firstTextBaseline) {
-                                    VStack(alignment: .leading) {
-                                        Text(post.title)
-                                            .font(.largeTitle)
-                                            .fontWeight(.bold)
-                                            .foregroundColor(.black)
-                                        nospaceTags(tags: post.postType)
-                                        Spacer()
-                                        Divider().frame(height: 0.5).background(Color.black)
-                                        HStack {
-                                            Text("Post Updated")
-                                                .font(.caption)
+                                HStack{
+                                    HStack(alignment: .firstTextBaseline) {
+                                        VStack(alignment: .leading) {
+                                            Text(post.title)
+                                                .font(.largeTitle)
+                                                .fontWeight(.bold)
                                                 .foregroundColor(.black)
+                                            nospaceTags(tags: post.postType)
                                             Spacer()
-                                            Text(post.date)
-                                                .font(.caption)
-                                                .foregroundColor(.black)
-                                        }.padding(.bottom, 20)
-                                    }.padding(.top, 30)
-                                    
-                                    Image(systemName: "arrow.right")
-                                        .foregroundColor(.iconGray)
-                                        .font(.largeTitle)
+                                            Divider().frame(height: 0.5).background(Color.black)
+                                            HStack {
+                                                Text("Post Updated")
+                                                    .font(.caption)
+                                                    .foregroundColor(.black)
+                                                Spacer()
+                                                Text(post.date)
+                                                    .font(.caption)
+                                                    .foregroundColor(.black)
+                                            }.padding(.bottom, 20)
+                                        }.padding(.top, 30)
+                                        
+                                        Image(systemName: "arrow.right")
+                                            .foregroundColor(.iconGray)
+                                            .font(.largeTitle)
+                                    }
+                                    .padding(.horizontal)
                                 }
-                                .padding(.horizontal)
+                                .frame(width: g.size.width, height: g.size.height / 2.5)
+                                .background(post.Color)
                             }
-                            .frame(width: g.size.width, height: g.size.height / 2.5)
-                            .background(post.Color)
-                            }
-                           
+                            
                         }
-                    }.onTapGesture {
-                        
                     }
                 }.frame(width: g.size.width, height: g.size.height)
                 .navigationBarHidden(true)
@@ -485,6 +482,7 @@ struct NospaceListDestination: View {
                         HStack {
                             Button(action: {
                                 self.presentationMode.wrappedValue.dismiss()
+                                
                             }, label: {
                                 Image(systemName: "arrow.left")
                                     .font(.title)
@@ -555,7 +553,7 @@ struct NospaceListDestination: View {
 
 struct ContentView: View {
     var body: some View {
-        SimpleListView()
+        NoSpaceList()
     }
 }
 
